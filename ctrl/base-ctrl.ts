@@ -1,5 +1,6 @@
-import { toolset } from '../util'
+import { Request, Response } from 'express'
 import config from '../config'
+import { toolset } from '../util'
 import { User } from '../model'
 import { jwtSvc } from '../service'
 
@@ -18,7 +19,7 @@ export default {
             getRes.username !== username ||
             getRes.password !== toolset.hash(password + config.HASH_SECRET)
         ) {
-            throw global.MessageErr('LoginFail')
+            throw toolset.messageErr('LoginFail')
         }
 
         // create jwt token
@@ -43,7 +44,7 @@ export default {
     async verify(req: Request, res: Response) {
         const { authorization } = req.headers
         if (!authorization) {
-            throw global.MessageErr('VerifyFail')
+            throw toolset.messageErr('VerifyFail')
         }
         const accessToken = authorization.substr(7)
 
@@ -52,10 +53,10 @@ export default {
         try {
             payload = await jwtSvc.verify(accessToken)
         } catch (e) {
-            throw global.MessageErr('VerifyFail')
+            throw toolset.messageErr('VerifyFail')
         }
         if (!payload) {
-            throw global.MessageErr('VerifyFail')
+            throw toolset.messageErr('VerifyFail')
         }
 
         res.success(payload)
@@ -69,7 +70,7 @@ export default {
 
         // user exists
         if (await User.findOne({ where: { username } })) {
-            throw global.MessageErr('UserExist')
+            throw toolset.messageErr('UserExist')
         }
 
         password = toolset.hash(password + config.HASH_SECRET)

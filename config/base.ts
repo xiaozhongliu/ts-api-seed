@@ -18,8 +18,8 @@ export default {
     ],
 
     // logs location
-    API_LOG_PATH: `${__dirname}/../log/`,
-    TASK_LOG_PATH: `${__dirname}/../log/task/`,
+    API_LOG_PATH: `${__dirname}/../../log/`,
+    TASK_LOG_PATH: `${__dirname}/../../log/task/`,
 
     // http auth on logs
     HTTP_AUTH: {

@@ -5,21 +5,13 @@
  * pm2 install pm2-intercom
  ****************************************************************** */
 import fs from 'fs'
-import log4js from 'log4js'
+import log4js, { Logger } from 'log4js'
 import config from '../config'
-import moment from 'moment'
 
-moment.locale('zh-cn')
-
-export default logPath => {
+export default (logPath: string) => {
     const layout = {
         type: 'pattern',
-        pattern: '%x{time} - %m',
-        tokens: {
-            time() {
-                return moment().format('YYYY-MM-DD HH:mm:ss')
-            },
-        },
+        pattern: '%d{yyyy-MM-dd hh:mm:ss} - %m',
     }
     const appenders = {
         dateFile: {

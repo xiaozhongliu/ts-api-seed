@@ -5,6 +5,7 @@
             true,
             "check-space"
         ],
+        "eofline": true,
         "indent": [
             true,
             "spaces"
@@ -53,7 +54,12 @@
         "no-internal-module": true,
         "no-trailing-whitespace": true,
         "no-null-keyword": true,
-        "prefer-const": true,
+        "prefer-const": [
+            true,
+            {
+                "destructuring": "all"
+            }
+        ],
         "jsdoc-format": true
     }
 }

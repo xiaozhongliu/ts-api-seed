@@ -18,10 +18,10 @@ export default {
 
     /**
      * send rich text mail
-     * @param {string} appName      app name
-     * @param {string} partialBody  part of mail body in html
+     * @param appName     app name
+     * @param partialBody part of mail body in html
      */
-    alarm(appName, partialBody) {
+    alarm(appName: string, partialBody: string) {
         if (!MAILER_ON) return
 
         const entireBody = `<span style="font-family: 'Microsoft YaHei'"><b>错误详情:</b> ${partialBody}</span>`

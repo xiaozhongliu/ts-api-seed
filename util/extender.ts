@@ -5,11 +5,11 @@ import express from 'express'
 
 Object.assign(express.response, {
 
-    success(data, msg = 'success') {
+    success(data?: Object, msg: string = 'success') {
         this.json({ code: 1, msg, data })
     },
 
-    fail(code = -1, msg = 'fail') {
+    fail(code: number | string = -1, msg: string = 'fail') {
         this.json({ code, msg })
     },
 })

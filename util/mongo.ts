@@ -6,7 +6,7 @@ import paginate from 'mongoose-paginate'
 import config from '../config'
 
 mongoose.plugin(paginate)
-mongoose.plugin((schema) => {
+mongoose.plugin((schema: Schema) => {
     /**
      * add common fields
      */
@@ -16,7 +16,7 @@ mongoose.plugin((schema) => {
     /**
      * auto update updatedAt
      */
-    const updateHandler = function (next) {
+    const updateHandler = function (next: Function) {
         this._update.updatedAt = new Date()
         next()
     }
@@ -28,7 +28,7 @@ mongoose.plugin((schema) => {
     /**
      * insert or update
      */
-    schema.statics.upsert = function (query, data) {
+    schema.statics.upsert = function (query: Object, data: Object) {
         return this.findOneAndUpdate(
             query,
             data,
@@ -42,13 +42,13 @@ mongoose.plugin((schema) => {
 
     /**
      * paged query
-     * @param {object} query    query conditions
-     * @param {number} pageNo   page number
-     * @param {number} pageSize page size
-     * @param {string} projection   fields projection
-     * @param {object} populate     populate referenced docs. eg: { path: 'userId', select: '-_id name' }
+     * @param query    query conditions
+     * @param pageNo   page number
+     * @param pageSize page size
+     * @param projection fields projection
+     * @param populate   populate referenced docs. eg: { path: 'userId', select: '-_id name' }
      */
-    schema.statics.page = function (query, pageNo, pageSize, projection, populate) {
+    schema.statics.page = function (query: Object, pageNo: number, pageSize: number, projection: string, populate: Object) {
         return this.paginate(
             query,
             {

@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import config from '../config'
 import { mailer } from '../util'
 
@@ -6,7 +7,7 @@ export default {
     /**
      * alarm system level errors
      */
-    createErrorLog(req, code, message, stack) {
+    createErrorLog(req: Request, code: number | string, message: string, stack: string) {
         const errorLog = {
             endType: 'backend',
             appName: config.API_NAME,

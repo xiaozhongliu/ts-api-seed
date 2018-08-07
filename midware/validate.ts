@@ -1,4 +1,5 @@
-import { validhelper } from '../util'
+import { Request, Response } from 'express'
+import { toolset, validhelper } from '../util'
 
 const Type = {
     String: { name: 'String', func: 'isString' },
@@ -38,28 +39,31 @@ export default {
 
     /**
      * validation helper
+     * @param req
+     * @param next
+     * @param fields
      */
-    validateParams(req, next, fields) {
+    validateParams(req: Request, next: Function, fields: any[]) {
         fields.forEach(([field, type, required]) => {
             if (required) {
                 const key = getEmptyErrorKey(field)
-                validhelper.assertEmptyOne(req, field, global.Message(key).code)
+                validhelper.assertEmptyOne(req, field, toolset.getMessage(key).code)
             }
             if (req.query[field] || req.body[field]) {
-                validhelper.assertType(req, field, global.Message('CommonErr').code, type)
+                validhelper.assertType(req, field, toolset.getMessage('CommonErr').code, type)
             }
         })
         handleResult(req, next)
     },
 }
 
-function getEmptyErrorKey(field) {
+function getEmptyErrorKey(field: string) {
     const firstLetterToUpper = field.slice(0, 1).toUpperCase()
     const otherLetters = field.slice(1)
     return `${firstLetterToUpper}${otherLetters}Empty`
 }
 
-function handleResult(req, next) {
+function handleResult(req: Request, next: Function) {
     req.getValidationResult().then(result => {
         if (result.isEmpty()) return next()
 

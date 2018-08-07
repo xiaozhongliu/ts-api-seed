@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, Request, Response } from 'express'
 import { validate } from './midware'
 import { baseCtrl, errorLogCtrl } from './ctrl'
 const router = Router()
@@ -10,23 +10,23 @@ register('post', '/register', baseCtrl.register)
 
 
 // check health
-const monitor = (req, res) => res.success(undefined, 'sevice works well')
+const monitor = (req: Request, res: Response) => res.success(undefined, 'sevice works well')
 router.get('/', monitor)
 router.get('/monitor', monitor)
 
 
 /**
  * register ctrl and validate(if any) midware funcs to routes
- * @param {string} method   http method
- * @param {string} path     route path
- * @param {function} func   ctrl func
- * @param {...function} midwares route level midware functions
+ * @param method   http method
+ * @param path     route path
+ * @param func     ctrl func
+ * @param midwares route level midware functions
  */
-function register(method, path, func, ...midwares) {
+function register(method: string, path: string, func: Function, ...midwares: Function[]) {
     const funcName = func.name
     const fields = validate[funcName]
     if (fields) {
-        const validFunc = (req, res, next) => {
+        const validFunc = (req: Request, res: Response, next: Function) => {
             validate.validateParams(req, next, fields)
         }
         return router[method](path, validFunc, ...midwares, co(func))
@@ -36,10 +36,10 @@ function register(method, path, func, ...midwares) {
 
 /**
  * wrap all ctrl funcs to handle errors
- * @param {function} ctrl   ctrl function
+ * @param ctrl ctrl function
  */
-function co(ctrl) {
-    return async (req, res, next) => {
+function co(ctrl: Function) {
+    return async (req: Request, res: Response, next: Function) => {
         try {
             await ctrl(req, res, next)
         } catch (e) {
