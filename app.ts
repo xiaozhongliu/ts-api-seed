@@ -11,7 +11,7 @@ import {
     auth,
 } from './midware'
 import { toolset, customValidators } from './util'
-import { errorLogCtrl } from './ctrl'
+import { errorlogCtrl } from './ctrl'
 import router from './router'
 import config from './config'
 
@@ -37,7 +37,7 @@ app.use(({ code = -1, message, stack }: Error, req: Request, res: Response, next
     res.fail(code, message)
     if (code === -1) console.log(stack)
     if (code > 10001 || req.method === 'OPTIONS') return
-    errorLogCtrl.createErrorLog(req, code, message, stack)
+    errorlogCtrl.createErrorLog(req, code, message, stack)
 })
 
 app.listen(config.API_PORT)

@@ -1,7 +1,7 @@
 import baseCtrl from './base-ctrl'
-import errorLogCtrl from './error-log-ctrl'
+import errorlogCtrl from './errorlog-ctrl'
 
 export {
     baseCtrl,
-    errorLogCtrl
+    errorlogCtrl
 }

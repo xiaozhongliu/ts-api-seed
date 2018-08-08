@@ -1,21 +1,20 @@
-import config from './config'
-import os from 'os'
-
-const cpuCount = os.cpus().length
+const cpuCount = require('os').cpus().length
 console.log(`cpu count is: ${cpuCount}`)
+
 const MAX_INS = cpuCount > 4 ? 4 : cpuCount
+const API_NAME = 'node-api-ts'
 
 const isPrimary = process.env.IS_PRIMARY_ENDPOINT
 console.log(`is primary endpoint: ${isPrimary || false}`)
 
 const apps = [
     {
-        name: config.API_NAME,
-        script: './app.js',
+        name: API_NAME,
+        script: './dist/app.js',
         instances: process.argv[5] ? 1 : MAX_INS,
         exec_mode: 'cluster',
-        out_file: `./log/pm2/${config.API_NAME}.log`,
-        error_file: `./log/pm2/${config.API_NAME}.log`,
+        out_file: `../pm2log/${API_NAME}.log`,
+        error_file: `../pm2log/${API_NAME}.log`,
         log_date_format: 'YYYY-MM-DD HH:mm:ss ',
         merge_logs: true,
         env: {
@@ -39,11 +38,11 @@ if (isPrimary) {
         'test-task',
     ].forEach(taskName => apps.push({
         name: taskName,
-        script: `./task/${taskName}.js`,
+        script: `./dist/task/${taskName}.js`,
         instances: 1,
         exec_mode: 'cluster',
-        out_file: `./log/pm2/${taskName}.log`,
-        error_file: `./log/pm2/${taskName}.log`,
+        out_file: `../pm2log/${taskName}.log`,
+        error_file: `../pm2log/${taskName}.log`,
         log_date_format: 'YYYY-MM-DD HH:mm:ss ',
         merge_logs: true,
         env: {

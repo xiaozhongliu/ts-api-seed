@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { validate } from './midware'
-import { baseCtrl, errorLogCtrl } from './ctrl'
+import { baseCtrl } from './ctrl'
 const router = Router()
 
 // base
