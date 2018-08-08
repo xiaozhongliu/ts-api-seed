@@ -1,6 +1,5 @@
 import { promisify } from 'util'
 import { redis } from '../util'
-import { Int32 } from '../node_modules/.3.1.3@@types/mongodb/node_modules/@types/bson'
 
 const set = promisify(redis.set).bind(redis)
 const get = promisify(redis.get).bind(redis)

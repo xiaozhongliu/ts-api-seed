@@ -1,5 +1,6 @@
 interface Config extends Indexed {
 
+    // basic
     API_NAME: string
     API_PORT: number
 
@@ -23,7 +24,7 @@ interface Config extends Indexed {
         ITEMS_REG: RegExp
     }
 
-    // mailer related params
+    // mailer related config
     MAILER: {
         HOST: string
         PORT: number
