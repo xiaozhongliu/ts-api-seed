@@ -18,12 +18,12 @@ const User = postgres.define<UserModel, UserModel>('user', {
     avatar: { type: STRING(200) },
 
 }, {
-        comment: '用户表',
-        freezeTableName: true,
-        timestamps: true,
-        underscored: true,
-        indexes: [{ unique: true, fields: ['sys_type', 'username'] }],
-    })
+    comment: '用户表',
+    freezeTableName: true,
+    timestamps: true,
+    underscored: true,
+    indexes: [{ unique: true, fields: ['sys_type', 'username'] }],
+})
 
 export default User
 

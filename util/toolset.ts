@@ -75,6 +75,18 @@ export default {
         return parseString(xml)
     },
 
+    /**
+     * validate a fuzzy search keyword
+     * @param {string} keyword
+     */
+    checkKeyword(keyword) {
+        try {
+            return new RegExp(keyword || '.*')
+        } catch (e) {
+            throw new Error('请不要输入特殊字符')
+        }
+    },
+
     getMessage(key: string) {
         return messages[key]
     },

@@ -1,7 +1,7 @@
 export default {
 
     // basic
-    API_NAME: 'node-api-seed',
+    API_NAME: 'ts-api-seed',
     API_PORT: 8001,
 
     // security

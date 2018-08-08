@@ -2,7 +2,7 @@ const cpuCount = require('os').cpus().length
 console.log(`cpu count is: ${cpuCount}`)
 
 const MAX_INS = cpuCount > 4 ? 4 : cpuCount
-const API_NAME = 'node-api-ts'
+const API_NAME = 'ts-api-seed'
 
 const isPrimary = process.env.IS_PRIMARY_ENDPOINT
 console.log(`is primary endpoint: ${isPrimary || false}`)
@@ -60,4 +60,4 @@ if (isPrimary) {
     }))
 }
 
-export default { apps }
+module.exports = { apps }

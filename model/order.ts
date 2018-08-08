@@ -55,7 +55,7 @@ const Order = new mongoose.Schema({
     // 取消原因
     cancelReason: String,
 
-}, { versionKey: false })
+}, { id: false, versionKey: false })
 
 Order.index({ username: 1 })
 

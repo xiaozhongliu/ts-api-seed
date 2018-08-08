@@ -1,8 +1,10 @@
 {
-  "name": "express-typescript-starter",
+  "name": "ts-api-seed",
   "version": "0.1.0",
-  "description": "A starting point for Node.js express apps with TypeScript",
-  "author": "Bowden Kelly",
+  "description": "a typescript node api seed project",
+  "main": "app.ts",
+  "author": "xiaozhongliu",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "start": "npm run watch-node",

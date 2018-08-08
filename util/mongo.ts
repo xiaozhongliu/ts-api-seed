@@ -47,18 +47,28 @@ mongoose.plugin((schema: mongoose.Schema) => {
      * @param pageSize page size
      * @param projection fields projection
      * @param populate   populate referenced docs. eg: { path: 'userId', select: '-_id name' }
+     * @param lean     return plain javascript objects
+     * @param sort     sort option
      */
-    schema.statics.page = function (query: object, pageNo: number, pageSize: number, projection: string, populate: object) {
+    schema.statics.page = function (
+        query: object,
+        pageNo: number,
+        pageSize: number,
+        projection: string,
+        populate: object,
+        lean: boolean = true,
+        sort: string = '-createdAt'
+    ) {
         return this.paginate(
             query,
             {
-                select: projection,
-                populate,
                 page: pageNo || 1,
                 limit: pageSize || 10,
-                sort: '-createdAt',
-                lean: true,
+                select: projection,
+                populate,
+                lean,
                 leanWithId: false,
+                sort: sort,
             },
         )
     }

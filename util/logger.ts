@@ -4,11 +4,12 @@
  * IMPORTANT: please install a module to work under pm2 cluster mode:
  * pm2 install pm2-intercom
  ****************************************************************** */
-import fs from 'fs'
 import log4js, { Logger } from 'log4js'
+import fs from 'fs'
 import config from '../config'
 
 export default (logPath: string) => {
+
     const layout = {
         type: 'pattern',
         pattern: '%d{yyyy-MM-dd hh:mm:ss} - %m',

@@ -31,7 +31,7 @@ export default {
             subject: `[${getEnv()}]应用[${appName}]出错`,
             html: entireBody,
         }
-        transporter.sendMail(mailOptions, (err, info) => { // eslint-disable-line
+        transporter.sendMail(mailOptions, (err, info) => {
             err && console.log('MAIL ALARM FAIL:   ', err)
         })
     },
