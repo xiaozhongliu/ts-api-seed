@@ -4,7 +4,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "moduleResolution": "node",
-        //"noImplicitAny": true,
+        "noImplicitAny": true,
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",

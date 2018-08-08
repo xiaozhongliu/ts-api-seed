@@ -24,6 +24,7 @@ router.get('/monitor', monitor)
  */
 function register(method: string, path: string, func: Function, ...midwares: Function[]) {
     const funcName = func.name
+    // @ts-ignore
     const fields = validate[funcName]
     if (fields) {
         const validFunc = (req: Request, res: Response, next: Function) => {

@@ -1,4 +1,4 @@
-export default interface Config {
+interface Config {
 
     [index: string]: any
 

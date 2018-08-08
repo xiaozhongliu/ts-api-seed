@@ -38,7 +38,7 @@ export default {
      */
     assertType(req: Request, field: string, code: number, type: Type) {
         const assertMethod = getMethod(req, field)
-        const midRes = assertMethod(
+        const midRes: any = assertMethod(
             field,
             `${code}@@请求参数${field}的值${getFieldValue(req, field)}不是${type.name}类型`,
         )
