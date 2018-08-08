@@ -19,18 +19,12 @@ const Types = {
 
 export default {
 
-    /**
-     * validate api: login
-     */
     login: [
         ['sysType', Types.Number, true],
         ['username', Types.String, true],
         ['password', Types.String, true],
     ],
 
-    /**
-     * validate api: register
-     */
     register: [
         ['sysType', Types.Number, true],
         ['username', Types.String, true],

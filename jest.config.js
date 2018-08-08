@@ -1,4 +1,5 @@
 module.exports = {
+
     globals: {
         'ts-jest': {
             tsConfigFile: 'tsconfig.json'
@@ -15,4 +16,4 @@ module.exports = {
         '**/test/**/*.test.(ts|js)'
     ],
     testEnvironment: 'node'
-};
+}

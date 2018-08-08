@@ -8,12 +8,16 @@ const User = postgres.define<UserModel, UserModel>('user', {
 
     // 主键
     userId: { type: INTEGER, primaryKey: true, autoIncrement: true, field: 'user_id' },
+
     // 系统分类
     sysType: { type: INTEGER, allowNull: false, field: 'sys_type' },
+
     // 用户名
     username: { type: STRING(50), allowNull: false },
+
     // 密码
     password: { type: STRING(32), allowNull: false },
+
     // 头像
     avatar: { type: STRING(200) },
 

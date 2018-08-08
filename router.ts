@@ -3,6 +3,7 @@ import { validate } from './midware'
 import { baseCtrl } from './ctrl'
 const router = Router()
 
+
 // base
 register('post', '/login', baseCtrl.login)
 register('get', '/verify', baseCtrl.verify)
@@ -19,7 +20,7 @@ router.get('/monitor', monitor)
  * register ctrl and validate(if any) midware funcs to routes
  * @param method   http method
  * @param path     route path
- * @param func     ctrl func
+ * @param func     ctrl function
  * @param midwares route level midware functions
  */
 function register(method: string, path: string, func: Function, ...midwares: Function[]) {

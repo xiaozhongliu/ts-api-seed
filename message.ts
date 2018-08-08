@@ -1,6 +1,7 @@
 import config from './config'
 
 const messages: Indexed = {
+
     AuthFail: { code: 10001, msg: `身份验证失败:${config.API_NAME}` },
     NotFound: { code: 10002, msg: '请求的资源不存在:@param' },
 

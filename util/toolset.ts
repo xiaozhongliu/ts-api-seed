@@ -79,7 +79,7 @@ export default {
      * validate a fuzzy search keyword
      * @param {string} keyword
      */
-    checkKeyword(keyword) {
+    checkKeyword(keyword: string) {
         try {
             return new RegExp(keyword || '.*')
         } catch (e) {

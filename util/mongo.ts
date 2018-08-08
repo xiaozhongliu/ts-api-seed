@@ -7,6 +7,7 @@ import config from '../config'
 
 mongoose.plugin(paginate)
 mongoose.plugin((schema: mongoose.Schema) => {
+
     /**
      * add common fields
      */
