@@ -63,8 +63,3 @@ function getFieldValue(req: Request, field: string) {
     }
     return value
 }
-
-interface Type {
-    name?: string
-    func?: string
-}

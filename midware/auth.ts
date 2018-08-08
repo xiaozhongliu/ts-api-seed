@@ -32,6 +32,6 @@ export default async (req: Request, res: Response, next: Function) => {
  * no auth files or paths
  * @param path req url
  */
-function isNoAuthPath(path: string): Boolean {
+function isNoAuthPath(path: string) {
     return config.NO_AUTH_PATHS.includes(path) || config.NO_AUTH_REG.test(path)
 }
