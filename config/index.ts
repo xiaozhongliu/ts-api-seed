@@ -10,7 +10,7 @@ const envs: Indexed = { dev, test, qa, prod }
 export default mergeDeep(base, envs[env])
 
 /**
- * helper methods (they should be here other than ..util namespace)
+ * helper methods (they should be here other than in ..util namespace)
  */
 function mergeDeep(target: any, source: any): Config {
     const output = Object.assign({}, target)

@@ -1,5 +1,6 @@
 export default {
 
+    // basic
     API_NAME: 'node-api-seed',
     API_PORT: 8001,
 
@@ -28,7 +29,7 @@ export default {
         ITEMS_REG: /\.log$|^\/dashboard/,
     },
 
-    // mailer related params
+    // mailer related config
     MAILER: {
         HOST: 'smtp.test.com',
         PORT: 25,

@@ -24,7 +24,7 @@ export default {
      * @param token token to be verified
      */
     async verify(token: string) {
-        const payload: { iat?: number, exp?: number } = await verify(
+        const payload = await verify(
             token,
             config.JWT_SECRET,
         )

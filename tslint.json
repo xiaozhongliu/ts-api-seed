@@ -60,6 +60,7 @@
                 "destructuring": "all"
             }
         ],
-        "jsdoc-format": true
+        "jsdoc-format": true,
+        "triple-equals": true
     }
 }

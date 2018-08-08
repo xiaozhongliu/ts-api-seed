@@ -7,7 +7,7 @@ import { jwtSvc } from '../service'
 export default {
 
     /**
-     * login
+     * user login
      */
     async login(req: Request, res: Response) {
         let { username, password, redirectUrl } = req.body
@@ -63,7 +63,7 @@ export default {
     },
 
     /**
-     * register
+     * user register
      */
     async register(req: Request, res: Response) {
         let { sysType, username, password, avatar } = req.body
