@@ -6,7 +6,7 @@ import prod from './prod'
 
 const env = process.env.NODE_ENV || 'dev'
 console.log(`env is: ${env}`)
-const envs: { [index: string]: any } = { dev, test, qa, prod }
+const envs: Indexed = { dev, test, qa, prod }
 export default mergeDeep(base, envs[env])
 
 /**

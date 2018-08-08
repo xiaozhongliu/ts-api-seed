@@ -1,6 +1,4 @@
-interface Config {
-
-    [index: string]: any
+interface Config extends Indexed {
 
     API_NAME: string
     API_PORT: number
