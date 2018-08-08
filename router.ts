@@ -11,7 +11,9 @@ register('post', '/register', baseCtrl.register)
 
 
 // check health
-const monitor = (req: Request, res: Response) => res.success(undefined, 'sevice works well')
+const monitor = (req: Request, res: Response) => {
+    res.success(undefined, 'sevice works well')
+}
 router.get('/', monitor)
 router.get('/monitor', monitor)
 

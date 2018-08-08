@@ -4,9 +4,9 @@ import test from './test'
 import qa from './qa'
 import prod from './prod'
 
+const envs: Indexed = { dev, test, qa, prod }
 const env = process.env.NODE_ENV || 'dev'
 console.log(`env is: ${env}`)
-const envs: Indexed = { dev, test, qa, prod }
 export default mergeDeep(base, envs[env])
 
 /**

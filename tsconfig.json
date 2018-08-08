@@ -4,6 +4,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "moduleResolution": "node",
+        "experimentalDecorators": true,
         "noImplicitAny": true,
         "sourceMap": true,
         "outDir": "dist",
@@ -14,5 +15,8 @@
                 "type/*"
             ]
         }
-    }
+    },
+    "exclude": [
+        "test/*"
+    ]
 }

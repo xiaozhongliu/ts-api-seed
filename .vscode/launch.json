@@ -7,9 +7,21 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Attach by Process ID",
+            "name": "api",
             "processId": "${command:PickProcess}",
             "protocol": "inspector"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "tsnode",
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
+            ],
+            "args": [
+                "${workspaceFolder}/model/enum.ts"
+            ]
+        },
     ]
 }
