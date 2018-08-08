@@ -13,7 +13,7 @@ export default mergeDeep(base, envs[env])
 /**
  * helper methods (they should be here other than ..util namespace)
  */
-function mergeDeep(target: Config, source: Config): Config {
+function mergeDeep(target, source): Config {
     const output = Object.assign({}, target)
     if (!isObject(target) || !isObject(source)) {
         return <Config>output
@@ -28,6 +28,6 @@ function mergeDeep(target: Config, source: Config): Config {
     return <Config>output
 }
 
-function isObject(item: Config) {
+function isObject(item) {
     return item && typeof item === 'object' && !Array.isArray(item)
 }

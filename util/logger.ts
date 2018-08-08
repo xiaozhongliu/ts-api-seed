@@ -29,6 +29,7 @@ export default (logPath: string) => {
 
     // non prod logs also output to console
     if (config.DEBUG) {
+        // @ts-ignore
         appenders.console = { type: 'console', layout }
         categories.default.appenders.push('console')
     }

@@ -3,6 +3,7 @@
  ****************************************************************** */
 import express from 'express'
 
+// @ts-ignore
 Object.assign(express.response, {
 
     success(data?: object, msg: string = 'success') {

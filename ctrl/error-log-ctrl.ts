@@ -24,6 +24,7 @@ export default {
             username: req.body.username,
         }
         if (req.method !== 'GET') {
+            // @ts-ignore
             errorLog.data.body = req.body
         }
 

@@ -6,7 +6,9 @@ import { logger as initLogger } from '../util'
 const logger = initLogger(config.API_LOG_PATH)
 
 // add a logging aspect to the primary res.json function
+// @ts-ignore
 const origin = express.response.json
+// @ts-ignore
 express.response.json = function (json: object) {
     logger.info(`[${this.reqId}] Resp  `, JSON.stringify(json))
     return origin.call(this, json)
