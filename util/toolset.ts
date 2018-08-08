@@ -63,7 +63,7 @@ export default {
      * parse object to xml string
      * @param obj original object
      */
-    buildXml(obj: Object) {
+    buildXml(obj: object) {
         return builder.buildObject(obj)
     },
 
@@ -89,7 +89,7 @@ export default {
         return err
     },
 
-    extractErr(body: Object) {
+    extractErr(body: { code: number, msg: string }) {
         const err = new Error(body.msg)
         err.code = body.code
         return err

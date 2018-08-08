@@ -5,7 +5,7 @@ import express from 'express'
 
 Object.assign(express.response, {
 
-    success(data?: Object, msg: string = 'success') {
+    success(data?: object, msg: string = 'success') {
         this.json({ code: 1, msg, data })
     },
 

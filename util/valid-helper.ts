@@ -36,7 +36,7 @@ export default {
      * @param code  error code
      * @param type  field type
      */
-    assertType(req: Request, field: string, code: number, type: Object) {
+    assertType(req: Request, field: string, code: number, type: Type) {
         const assertMethod = getMethod(req, field)
         const midRes = assertMethod(
             field,
@@ -62,4 +62,9 @@ function getFieldValue(req: Request, field: string) {
         value = JSON.stringify(value)
     }
     return value
+}
+
+interface Type {
+    name?: string
+    func?: string
 }

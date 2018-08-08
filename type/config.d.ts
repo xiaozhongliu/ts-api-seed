@@ -1,5 +1,7 @@
 export default interface Config {
 
+    [index: string]: any
+
     API_NAME: string
     API_PORT: number
 
@@ -34,17 +36,17 @@ export default interface Config {
     }
 
 
-    DEBUG: Boolean
-    MAILER_ON: Boolean
+    DEBUG?: Boolean
+    MAILER_ON?: Boolean
 
-    REDIS: {
+    REDIS?: {
         HOST: string
         PORT: number
     }
 
-    MONGO: string
+    MONGO?: string
 
-    POSTGRES: {
+    POSTGRES?: {
         HOST: string
         BASE: string
         USER: string

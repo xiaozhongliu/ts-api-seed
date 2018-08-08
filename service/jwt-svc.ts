@@ -1,9 +1,9 @@
 import { promisify } from 'util'
-import jwt from 'jsonwebtoken'
+import jwt, { Secret } from 'jsonwebtoken'
 import config from '../config'
 
-const sign = promisify(jwt.sign)
-const verify = promisify(jwt.verify)
+const sign = promisify(jwt.sign).bind(jwt)
+const verify = promisify(jwt.verify).bind(jwt)
 
 export default {
 
@@ -11,7 +11,7 @@ export default {
      * jwt sign
      * @param payload data to be signed
      */
-    async sign(payload: Object) {
+    async sign(payload: object) {
         return sign(
             payload,
             config.JWT_SECRET,
@@ -24,7 +24,7 @@ export default {
      * @param token token to be verified
      */
     async verify(token: string) {
-        const payload = await verify(
+        const payload: { iat?: number, exp?: number } = await verify(
             token,
             config.JWT_SECRET,
         )

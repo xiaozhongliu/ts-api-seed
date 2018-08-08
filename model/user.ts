@@ -4,7 +4,7 @@ import { INTEGER, STRING } from 'sequelize'
 /**
  * 用户表
  */
-const User = postgres.define('user', {
+const User = postgres.define<UserModel, UserModel>('user', {
 
     // 主键
     userId: { type: INTEGER, primaryKey: true, autoIncrement: true, field: 'user_id' },
@@ -18,11 +18,19 @@ const User = postgres.define('user', {
     avatar: { type: STRING(200) },
 
 }, {
-    comment: '用户表',
-    freezeTableName: true,
-    timestamps: true,
-    underscored: true,
-    indexes: [{ unique: true, fields: ['sys_type', 'username'] }],
-})
+        comment: '用户表',
+        freezeTableName: true,
+        timestamps: true,
+        underscored: true,
+        indexes: [{ unique: true, fields: ['sys_type', 'username'] }],
+    })
 
 export default User
+
+interface UserModel {
+    userId?: number
+    sysType?: number
+    username?: string
+    password?: string
+    avatar?: string
+}

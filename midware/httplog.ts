@@ -1,13 +1,13 @@
 import express, { Request, Response } from 'express'
 import shortid from 'shortid'
 import config from '../config'
-import { logger } from '../util'
+import { logger as initLogger } from '../util'
 
-logger = logger(config.API_LOG_PATH)
+const logger = initLogger(config.API_LOG_PATH)
 
 // add a logging aspect to the primary res.json function
 const origin = express.response.json
-express.response.json = function (json: Object) {
+express.response.json = function (json: object) {
     logger.info(`[${this.reqId}] Resp  `, JSON.stringify(json))
     return origin.call(this, json)
 }

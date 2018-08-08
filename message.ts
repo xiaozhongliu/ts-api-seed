@@ -1,6 +1,6 @@
 import config from './config'
 
-export default {
+const messages: { [index: string]: any } = {
     AuthFail: { code: 10001, msg: `身份验证失败:${config.API_NAME}` },
     NotFound: { code: 10002, msg: '请求的资源不存在:@param' },
 
@@ -12,3 +12,5 @@ export default {
     VerifyFail: { code: 11005, msg: '访问令牌验证失败' },
     UserExist: { code: 11006, msg: '用户已经存在' },
 }
+
+export default messages

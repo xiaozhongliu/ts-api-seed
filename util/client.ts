@@ -7,7 +7,7 @@ axios.interceptors.response.use(({ data }) => data)
 
 export default {
 
-    get(url: string, params: Object, headers: Object) {
+    get(url: string, params: object, headers: object) {
         return axios.get(
             url,
             {
@@ -17,7 +17,7 @@ export default {
         )
     },
 
-    post(url: string, data: Object, headers: Object) {
+    post(url: string, data: object, headers: object) {
         return axios.post(
             url,
             data,
@@ -25,7 +25,7 @@ export default {
         )
     },
 
-    put(url: string, data: Object, headers: Object) {
+    put(url: string, data: object, headers: object) {
         return axios.put(
             url,
             data,
@@ -33,7 +33,7 @@ export default {
         )
     },
 
-    delete(url: string, headers: Object) {
+    delete(url: string, headers: object) {
         return axios.delete(
             url,
             { headers },

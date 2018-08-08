@@ -43,7 +43,7 @@ function getEnv() {
     return envMap[NODE_ENV]
 }
 
-const envMap = {
+const envMap: { [index: string]: any } = {
     dev: '开发环境',
     test: '测试环境',
     qa: 'QA环境',
