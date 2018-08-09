@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "node",
-            "request": "attach",
-            "name": "api",
-            "processId": "${command:PickProcess}",
-            "protocol": "inspector"
-        },
-        {
-            "type": "node",
             "request": "launch",
             "name": "tsnode",
             "runtimeArgs": [
@@ -20,8 +13,15 @@
                 "ts-node/register"
             ],
             "args": [
-                "${workspaceFolder}/model/enum.ts"
+                "${workspaceFolder}/app.ts"
             ]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "attach",
+            "processId": "${command:PickProcess}",
+            "protocol": "inspector"
         },
     ]
 }
