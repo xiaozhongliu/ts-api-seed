@@ -35,5 +35,5 @@ function desc(text: string) {
 
 export {
     Enum,
-    desc
+    desc,
 }

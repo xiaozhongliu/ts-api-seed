@@ -12,5 +12,5 @@ class Gender extends Enum {
 }
 
 export default {
-    Gender: new Gender()
+    Gender: new Gender(),
 }
