@@ -102,7 +102,7 @@ function handleResult(req: Request, next: Function) {
 
         const arr = result.array()[0].msg.split('@@')
         const err = new Error(arr[1])
-        err.code = parseInt(arr[0], 10)
+        err.code = Number.parseInt(arr[0])
         return next(err)
     })
 }
