@@ -34,6 +34,13 @@
             "check-separator",
             "check-type"
         ],
+        "trailing-comma": [
+            true,
+            {
+                "multiline": "always",
+                "singleline": "never"
+            }
+        ],
         "typedef-whitespace": [
             true,
             {

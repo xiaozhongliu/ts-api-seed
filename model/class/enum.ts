@@ -1,8 +1,8 @@
-export class Enum {
+class Enum {
 
     [index: string]: any
 
-    protected map: Map<string, string>
+    private map: Map<string, string>
 
     updateMap(property: string, text: string) {
         if (!this.map) this.map = new Map<string, string>()
@@ -27,8 +27,13 @@ export class Enum {
     }
 }
 
-export function desc(text: string) {
+function desc(text: string) {
     return function actual<T extends Enum>(target: T, property: string) {
         target.updateMap(property, text)
     }
+}
+
+export {
+    Enum,
+    desc
 }
