@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import { toolset, validhelper } from '../util'
-
 const COMMON_ERROR_CODE = toolset.getMessage('CommonErr').code
 
 const Types = {
@@ -85,13 +84,13 @@ function bodyChecker(body: any, field: string, type: Type) {
     if (type.base === 'String' && typeof value !== 'string') {
         throw toolset.extractErr({
             code: COMMON_ERROR_CODE,
-            msg: `请求参数${field}的值${value}不是String类型`
+            msg: `请求参数${field}的值${value}不是String类型`,
         })
     }
     if (type.base !== 'String' && typeof value === 'string') {
         throw toolset.extractErr({
             code: COMMON_ERROR_CODE,
-            msg: `请求参数${field}的值${value}不可以是String类型`
+            msg: `请求参数${field}的值${value}不可以是String类型`,
         })
     }
 }

@@ -43,3 +43,5 @@ app.listen(config.API_PORT)
 process.on('unhandledRejection', err => {
     console.log('Unhandled Rejection: ', err)
 })
+
+export default app

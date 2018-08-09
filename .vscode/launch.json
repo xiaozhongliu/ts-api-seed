@@ -23,5 +23,23 @@
             "processId": "${command:PickProcess}",
             "protocol": "inspector"
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "tsjest",
+            "program": "${workspaceRoot}/node_modules/jest/bin/jest",
+            "runtimeArgs": [
+                "-r",
+                "ts-node/register"
+            ],
+            "args": [
+                "--runInBand",
+                "--forceExit",
+                "${file}"
+            ],
+            "env": {
+                "NODE_ENV": "dev"
+            }
+        }
     ]
 }

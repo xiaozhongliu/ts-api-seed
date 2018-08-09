@@ -1,7 +1,11 @@
 import config from './config'
 
-const messages: Indexed = {
+export default {
 
+    get(key: string) { return this[key] },
+
+    Success: { code: 1, msg: '成功' },
+    Fail: { code: -1, msg: '失败' },
     AuthFail: { code: 10001, msg: `身份验证失败:${config.API_NAME}` },
     NotFound: { code: 10002, msg: '请求的资源不存在:@param' },
 
@@ -13,5 +17,3 @@ const messages: Indexed = {
     VerifyFail: { code: 11005, msg: '访问令牌验证失败' },
     UserExist: { code: 11006, msg: '用户已经存在' },
 }
-
-export default messages

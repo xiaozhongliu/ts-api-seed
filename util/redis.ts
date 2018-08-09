@@ -3,10 +3,11 @@
  ****************************************************************** */
 import Redis from 'redis'
 import config from '../config'
+const { REDIS } = config
 
 export default Redis.createClient({
-    host: config.REDIS.HOST,
-    port: config.REDIS.PORT,
+    host: REDIS.HOST,
+    port: REDIS.PORT,
     retry_strategy(options) {
         if (options.error && options.error.code === 'ECONNREFUSED') {
             // end reconnecting on a specific error and flush all

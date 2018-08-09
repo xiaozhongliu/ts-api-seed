@@ -88,11 +88,11 @@ export default {
     },
 
     getMessage(key: string) {
-        return messages[key]
+        return messages.get(key)
     },
 
     messageErr(key: string, param?: string) {
-        let { code, msg } = messages[key]
+        let { code, msg } = messages.get(key)
         if (param) {
             msg = msg.replace('@param', param)
         }

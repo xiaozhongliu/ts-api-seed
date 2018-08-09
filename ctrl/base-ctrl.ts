@@ -23,14 +23,14 @@ export default {
         }
 
         // create jwt token
-        const accessToken = await jwtSvc.sign({ username })
+        const jwt = await jwtSvc.sign({ username })
 
         if (redirectUrl) {
-            redirectUrl = `${redirectUrl}?accessToken=${accessToken}`
+            redirectUrl = `${redirectUrl}?jwt=${jwt}`
         }
 
         res.success({
-            accessToken,
+            jwt,
             sysType: getRes.sysType,
             username: getRes.username,
             avatar: getRes.avatar,
@@ -46,12 +46,12 @@ export default {
         if (!authorization) {
             throw toolset.messageErr('VerifyFail')
         }
-        const accessToken = authorization.substr(7)
+        const jwt = authorization.substr(7)
 
         // verify jwt token
         let payload
         try {
-            payload = await jwtSvc.verify(accessToken)
+            payload = await jwtSvc.verify(jwt)
         } catch (e) {
             throw toolset.messageErr('VerifyFail')
         }
