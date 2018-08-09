@@ -1,4 +1,3 @@
-import 'source-map-support/register'
 import bodyParser from 'body-parser'
 import expressValidator from 'express-validator'
 import express, { Request, Response } from 'express'
