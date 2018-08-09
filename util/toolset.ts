@@ -87,10 +87,6 @@ export default {
         }
     },
 
-    getMessage(key: string) {
-        return messages.get(key)
-    },
-
     messageErr(key: string, param?: string) {
         let { code, msg } = messages.get(key)
         if (param) {

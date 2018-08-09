@@ -2,7 +2,7 @@
  * helper functions for express-validator
  ****************************************************************** */
 import { Request, Response } from 'express'
-import { toolset } from '../util'
+import messages from '../message'
 
 export default {
 
@@ -24,7 +24,7 @@ export default {
      */
     assertEmptyFromHeader(req: Request, fields: string[]) {
         fields.forEach(field => {
-            const { code, msg } = toolset.getMessage('AuthFail')
+            const { code, msg } = messages.AuthFail
             req.checkHeaders(field, `${code}@@${msg}`).notEmpty()
         })
     },

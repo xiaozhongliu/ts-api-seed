@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { toolset, validhelper } from '../util'
-const COMMON_ERROR_CODE = toolset.getMessage('CommonErr').code
+import messages from '../message'
 
 const Types = {
     String: { name: 'String', func: 'isString', base: 'String' },
@@ -38,7 +38,7 @@ export default {
         fields.forEach(([field, type, required]) => {
             if (required) {
                 const key = getEmptyErrorKey(field)
-                validhelper.assertEmptyOne(req, field, toolset.getMessage(key).code)
+                validhelper.assertEmptyOne(req, field, messages.get(key).code)
             }
 
             if (field in req.query) {
@@ -48,7 +48,7 @@ export default {
             }
 
             if (field in req.query || field in req.body) {
-                validhelper.assertType(req, field, COMMON_ERROR_CODE, type)
+                validhelper.assertType(req, field, messages.CommonErr.code, type)
             }
         })
         handleResult(req, next)
@@ -73,7 +73,7 @@ function queryParser(query: any, field: string, type: Type) {
             query[field] = value === 'true'
         }
     } catch (e) {
-        e.code = COMMON_ERROR_CODE
+        e.code = messages.CommonErr.code
         e.message = `请求参数${field}的值${value}不是${type.name}类型`
         throw e
     }
@@ -83,13 +83,13 @@ function bodyChecker(body: any, field: string, type: Type) {
     const value = body[field]
     if (type.base === 'String' && typeof value !== 'string') {
         throw toolset.extractErr({
-            code: COMMON_ERROR_CODE,
+            code: messages.CommonErr.code,
             msg: `请求参数${field}的值${value}不是String类型`,
         })
     }
     if (type.base !== 'String' && typeof value === 'string') {
         throw toolset.extractErr({
-            code: COMMON_ERROR_CODE,
+            code: messages.CommonErr.code,
             msg: `请求参数${field}的值${value}不可以是String类型`,
         })
     }
