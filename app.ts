@@ -1,3 +1,5 @@
+global.rootDir = __dirname.replace('/dist', '')
+
 import bodyParser from 'body-parser'
 import expressValidator from 'express-validator'
 import express, { Request, Response } from 'express'
