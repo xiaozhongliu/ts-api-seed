@@ -5,9 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "tsnode",
             "type": "node",
             "request": "launch",
-            "name": "tsnode",
+            "protocol": "inspector",
             "runtimeArgs": [
                 "-r",
                 "ts-node/register"
@@ -17,29 +18,11 @@
             ]
         },
         {
+            "name": "attach",
             "type": "node",
             "request": "attach",
-            "name": "attach",
-            "processId": "${command:PickProcess}",
-            "protocol": "inspector"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "tsjest",
-            "program": "${workspaceRoot}/node_modules/jest/bin/jest",
-            "runtimeArgs": [
-                "-r",
-                "ts-node/register"
-            ],
-            "args": [
-                "--runInBand",
-                "--forceExit",
-                "${file}"
-            ],
-            "env": {
-                "NODE_ENV": "dev"
-            }
+            "protocol": "inspector",
+            "processId": "${command:PickProcess}"
         }
     ]
 }
