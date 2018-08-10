@@ -1,4 +1,5 @@
-global.rootDir = __dirname.replace('/dist', '')
+// use same root directory for node and ts-node
+global.rootdir = __dirname.replace('/dist', '')
 
 import bodyParser from 'body-parser'
 import expressValidator from 'express-validator'
@@ -39,7 +40,10 @@ app.use(({ code = -1, message, stack }: Error, req: Request, res: Response, next
     errorlogSvc.createErrorLog(req, code, message, stack)
 })
 
-app.listen(config.API_PORT)
+// use a different port for unittests from the running api
+const isInUnitTest = process.argv[1].includes('jest')
+const port = isInUnitTest ? 9999 : config.API_PORT
+app.listen(port)
 
 process.on('unhandledRejection', err => {
     console.log('Unhandled Rejection: ', err)
