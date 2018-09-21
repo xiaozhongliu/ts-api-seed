@@ -1,0 +1,35 @@
+version: "3.3"
+
+services:
+
+  api:
+    image: $REGISTRY_URL/$REGISTRY_USERNAME/$CI_PROJECT_NAME:$IMAGE_VERSION
+    environment:
+      - NODE_ENV=prod
+      - ENTRY_FILE=dist/app.js
+    ports:
+      - 9103:9103
+    volumes:
+      - /var/log/app/$CI_PROJECT_NAME:/app/log
+    deploy:
+      mode: replicated
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+        delay: 5s
+      placement:
+        constraints: [node.role == worker]
+
+  filebeat:
+    image: $REGISTRY_URL/$REGISTRY_USERNAME/flashbeep-filebeat
+    volumes:
+      - /var/log/app:/var/log/app
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        max_attempts: 5
+        delay: 5s
+      placement:
+        constraints: [node.role == worker]

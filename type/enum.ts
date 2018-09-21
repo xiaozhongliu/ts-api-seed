@@ -10,11 +10,11 @@ class Enum {
     }
 
     getNames() {
-        return Array.from(this.map.keys())
+        return [...this.map.keys()]
     }
 
     getTexts() {
-        return Array.from(this.map.values())
+        return [...this.map.values()]
     }
 
     getTextByName(name: string) {
@@ -24,6 +24,12 @@ class Enum {
     getTextByValue(value: number) {
         const name = this.getNames().find(name => this[name] === value)
         return this.map.get(name)
+    }
+
+    getValueByText(text: string) {
+        for (const [key, value] of this.map.entries()) {
+            if (text === value) return this[key]
+        }
     }
 }
 

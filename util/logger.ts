@@ -4,15 +4,30 @@
  * IMPORTANT: please install a module to work under pm2 cluster mode:
  * pm2 install pm2-intercom
  ****************************************************************** */
-import log4js, { Logger } from 'log4js'
 import fs from 'fs'
+import os from 'os'
+import log4js, { Logger } from 'log4js'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 import config from '../config'
+import Enum from '../model/enum'
+const { LogEvent } = Enum
+
+// get host ip address
+const networksOrigin = os.networkInterfaces()
+const networks =
+    networksOrigin.eth0 ||
+    networksOrigin.eth1 ||
+    networksOrigin.en0 ||
+    networksOrigin.en1 ||
+    networksOrigin.本地连接
+const address = networks.find(network => network.family === 'IPv4')
 
 export default (logPath: string) => {
 
     const layout = {
         type: 'pattern',
-        pattern: '%d{yyyy-MM-dd hh:mm:ss} - %m',
+        pattern: '%m',
     }
     const appenders = {
         dateFile: {
@@ -44,5 +59,34 @@ export default (logPath: string) => {
         pm2: true,
     })
 
-    return log4js.getLogger('APP')
+    const logger = log4js.getLogger('APP')
+
+    function log(event: string, data: object) {
+        logger.info(JSON.stringify(Object.assign({
+            '@appname': config.API_NAME,
+            '@servername': os.hostname(),
+            '@serverip': address.address,
+            '@env': process.env.NODE_ENV,
+            '@timestamp': moment().toISOString(),
+            event,
+        }, data)))
+    }
+
+    return {
+        info(message: string) {
+            log(LogEvent.Info, { message })
+        },
+
+        error(message: string) {
+            log(LogEvent.Error, { message })
+        },
+
+        launch(message: string) {
+            log(LogEvent.Launch, { message })
+        },
+
+        invoke(data: object) {
+            log(LogEvent.Invoke, data)
+        },
+    }
 }

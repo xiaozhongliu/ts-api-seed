@@ -11,9 +11,12 @@ cnpm i
 # compile in watch mode
 npm run build
 
+# debug with ts-node directly
+vscode -> F5 -> tsnode
+
 # serve in watch mode
 npm start
 
 # attach to debug
-vscode -> F5
+vscode -> F5 -> attach
 ```

@@ -29,7 +29,6 @@ const User = postgres.define<UserModel, UserModel>('user', {
     indexes: [{ unique: true, fields: ['sys_type', 'username'] }],
 })
 
-export default User
 
 interface UserModel {
     userId?: number
@@ -38,3 +37,5 @@ interface UserModel {
     password?: string
     avatar?: string
 }
+
+export default User

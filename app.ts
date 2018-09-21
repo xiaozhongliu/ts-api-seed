@@ -1,3 +1,4 @@
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev'
 // use same root directory for node and ts-node
 global.rootdir = __dirname.replace('/dist', '')
 
@@ -27,7 +28,7 @@ app.use(expressValidator({ customValidators }))
 app.use(httplog)
 app.use(cors)
 app.use(auth)
-app.use(router)
+app.use(`/${config.API_NAME}`, router)
 
 app.use((req: Request, res: Response, next: Function) => {
     next(toolset.messageErr('NotFound', req.url))
@@ -46,7 +47,7 @@ const port = isInUnitTest ? 9999 : config.API_PORT
 app.listen(port)
 
 process.on('unhandledRejection', err => {
-    console.log('Unhandled Rejection: ', err)
+    console.log('unhandled rejection:', err)
 })
 
 export default app

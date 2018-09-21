@@ -34,7 +34,7 @@ export default {
         const value = await get(key)
         try {
             return JSON.parse(value)
-        } catch (e) {
+        } catch (error) {
             return value
         }
     },
@@ -69,7 +69,7 @@ export default {
         const value = await hget(key, field)
         try {
             return JSON.parse(value)
-        } catch (e) {
+        } catch (error) {
             return value
         }
     },

@@ -4,6 +4,7 @@ import config from '../config'
 
 const sign = promisify(jwt.sign).bind(jwt)
 const verify = promisify(jwt.verify).bind(jwt)
+const JWT_SECRET = Buffer.from(config.JWT_SECRET, 'base64')
 
 export default {
 
@@ -14,8 +15,11 @@ export default {
     async sign(payload: object) {
         return sign(
             payload,
-            config.JWT_SECRET,
-            { expiresIn: config.JWT_TOKEN_TIMEOUT },
+            JWT_SECRET,
+            {
+                issuer: config.JWT_ISSUER,
+                expiresIn: config.JWT_TOKEN_TIMEOUT,
+            },
         )
     },
 
@@ -26,8 +30,10 @@ export default {
     async verify(token: string) {
         const payload = await verify(
             token,
-            config.JWT_SECRET,
+            JWT_SECRET,
+            { issuer: config.JWT_ISSUER },
         )
+        delete payload.iss
         delete payload.iat
         delete payload.exp
         return payload

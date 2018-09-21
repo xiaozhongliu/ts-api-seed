@@ -8,6 +8,8 @@ export default {
         PORT: 6379,
     },
 
+    ZOO_KEEPER: 'localhost:2181,localhost:2181',
+
     MONGO: 'mongodb://test:test@127.0.0.1:27017/test',
 
     POSTGRES: {

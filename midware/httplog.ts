@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express'
-import shortid from 'shortid'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 import config from '../config'
-import { logger as initLogger } from '../util'
+import { logger as initLogger, client } from '../util'
 
 const logger = initLogger(config.API_LOG_PATH)
 
@@ -10,28 +11,54 @@ const logger = initLogger(config.API_LOG_PATH)
 const origin = express.response.json
 // @ts-ignore
 express.response.json = function (json: object) {
-    logger.info(`[${this.reqId}] Resp  `, JSON.stringify(json))
+    if (this.log) {
+        this.log.resp = JSON.stringify(json)
+    }
     return origin.call(this, json)
 }
 
-logger.info(`service starts at http://localhost:${config.API_PORT}\n`)
+logger.launch(`service starts at http://localhost:${config.API_PORT}\n`)
 
 export default (req: Request, res: Response, next: Function) => {
     if (config.NO_AUTH_REG.test(req.url) || req.method === 'OPTIONS') {
         return next()
     }
 
-    res.start = new Date().getTime()
-    res.reqId = shortid.generate()
-
-    logger.info(`[${res.reqId}] Start `, req.method, req.url)
-    if (req.method !== 'GET') {
-        logger.info(`[${res.reqId}] Data  `, JSON.stringify(req.body))
+    res.start = moment()
+    res.log = {
+        url: req.url,
+        method: req.method,
+        headers: JSON.stringify({
+            'content-type': req.headers['content-type'],
+            authorization: req.headers.authorization,
+            'x-username': req.headers['x-username'],
+        }),
     }
 
-    res.on('finish', function () {
-        const duration = new Date().getTime() - this.start
-        logger.info(`[${this.reqId}] Done  `, this.statusCode, `(${duration}ms)\n`)
+    if (req.method !== 'GET') {
+        res.log.data = JSON.stringify(req.body)
+    }
+
+    res.on('finish', async function () {
+        let geo
+        const ip = this.req.headers['x-forwarded-for']
+        if (ip) {
+            try {
+                const { lat, lon }: Indexed = await client.get(`http://ip-api.com/json/${ip}`)
+                geo = { lat, lon }
+            } catch (error) { } // let it be
+        }
+
+        const end = moment()
+        Object.assign(this.log, {
+            status: this.statusCode,
+            '@clientip': ip,
+            '@clientgeo': geo,
+            '@reqstart': this.start.toISOString(),
+            '@reqend': end.toISOString(),
+            '@duration': end.diff(this.start, 'milliseconds'),
+        })
+        logger.invoke(this.log)
     })
 
     next()

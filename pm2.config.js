@@ -1,11 +1,11 @@
 const cpuCount = require('os').cpus().length
-console.log(`cpu count is: ${cpuCount}`)
+console.log('cpu count is:', cpuCount)
 
 const MAX_INS = cpuCount > 4 ? 4 : cpuCount
 const API_NAME = 'ts-api-seed'
 
 const isPrimary = process.env.IS_PRIMARY_ENDPOINT
-console.log(`is primary endpoint: ${isPrimary || false}`)
+console.log('is primary endpoint:', isPrimary || false)
 
 const apps = [
     {
@@ -23,8 +23,8 @@ const apps = [
         env_qa: {
             NODE_ENV: 'qa',
         },
-        env_test: {
-            NODE_ENV: 'test',
+        env_int: {
+            NODE_ENV: 'int',
         },
         env_dev: {
             NODE_ENV: 'dev',
@@ -51,8 +51,8 @@ if (isPrimary) {
         env_qa: {
             NODE_ENV: 'qa',
         },
-        env_test: {
-            NODE_ENV: 'test',
+        env_int: {
+            NODE_ENV: 'int',
         },
         env_dev: {
             NODE_ENV: 'dev',

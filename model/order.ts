@@ -56,6 +56,26 @@ const Order = new mongoose.Schema({
 
 }, { id: false, versionKey: false })
 
-Order.index({ username: 1 })
+Order.index({ creator: 1 })
 
-export default mongoose.model('Order', Order)
+
+export interface OrderModel extends mongoose.Document {
+    orderNO: Number,
+    traceNO: Number,
+    thirdPartySeq: String,
+    orderName: String,
+    paymentChannel: Number,
+    goodId: mongoose.Schema.Types.ObjectId,
+    orderAmount: Number,
+    orderStatus: Number,
+    operateDeadline: Number,
+    paymentExpiry: Number,
+    invoiceStatus: Number,
+    owner: String,
+    creator: String,
+    payedAt: Number,
+    cancelledAt: Number,
+    cancelReason: String,
+}
+
+export default mongoose.model<OrderModel>('Order', Order)

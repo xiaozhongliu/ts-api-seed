@@ -1,4 +1,4 @@
-import { Enum, desc } from './class/enum'
+import { Enum, desc } from '../type/enum'
 
 class Gender extends Enum {
     @desc('未知')
@@ -11,6 +11,14 @@ class Gender extends Enum {
     Female = 2
 }
 
+class LogEvent {
+    static Info = 'info'
+    static Error = 'error'
+    static Launch = 'launch'
+    static Invoke = 'invoke'
+}
+
 export default {
     Gender: new Gender(),
+    LogEvent,
 }

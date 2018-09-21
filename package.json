@@ -11,7 +11,7 @@
     "build": "npm run watch-ts",
     "watch-node": "nodemon --inspect dist/app.js",
     "watch-ts": "tsc -w",
-    "test": "jest --silent --verbose --forceExit"
+    "test": "NODE_ENV=dev jest --silent --verbose --forceExit"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -25,6 +25,7 @@
     "moment": "^2.22.2",
     "mongoose": "^5.2.7",
     "mongoose-paginate": "^5.0.3",
+    "node-zookeeper-client": "^0.2.2",
     "nodemailer": "^4.6.7",
     "pg": "^7.4.3",
     "redis": "^2.8.0",
@@ -42,6 +43,7 @@
     "@types/moment": "^2.13.0",
     "@types/mongoose": "^5.2.4",
     "@types/mongoose-paginate": "^5.0.6",
+    "@types/node-zookeeper-client": "^0.2.6",
     "@types/nodemailer": "^4.6.2",
     "@types/pg": "^7.4.10",
     "@types/redis": "^2.8.6",

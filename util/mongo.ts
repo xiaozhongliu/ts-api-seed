@@ -57,7 +57,7 @@ mongoose.plugin((schema: mongoose.Schema) => {
         pageSize: number,
         projection: string,
         populate: object,
-        lean: boolean = true,
+        lean: Boolean = true,
         sort: string = '-createdAt',
     ) {
         return this.paginate(

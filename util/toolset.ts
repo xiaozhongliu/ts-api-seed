@@ -2,17 +2,27 @@
  * fragmentary util functions are put here
  ****************************************************************** */
 import crypto from 'crypto'
-import moment from 'moment'
 import xml2js from 'xml2js'
+import moment from 'moment'
+import 'moment/locale/zh-cn'
 import { promisify } from 'util'
 import messages from '../message'
 
-moment.locale('zh-cn')
 const builder = new xml2js.Builder()
 const parser = new xml2js.Parser({ explicitArray: false, explicitRoot: false, trim: true })
 const parseString = promisify(parser.parseString).bind(parser)
 
 export default {
+
+    /**
+     * delay a specific time period
+     * @param period in millisecond
+     */
+    async delay(period: number) {
+        return new Promise((resolve) => {
+            setTimeout(() => { resolve() }, period)
+        })
+    },
 
     /**
      * md5 hash
@@ -82,7 +92,7 @@ export default {
     checkKeyword(keyword: string) {
         try {
             return new RegExp(keyword || '.*')
-        } catch (e) {
+        } catch (error) {
             throw new Error('请不要输入特殊字符')
         }
     },

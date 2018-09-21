@@ -3,40 +3,42 @@
  ****************************************************************** */
 import axios from 'axios'
 
-axios.interceptors.response.use(({ data }) => data)
-
 export default {
 
-    get(url: string, params: object, headers: object) {
-        return axios.get(
+    async get<T>(url: string, params?: object, headers?: object) {
+        const res = await axios.get<T>(
             url,
             {
                 headers,
                 params,
             },
         )
+        return res.data
     },
 
-    post(url: string, data: object, headers: object) {
-        return axios.post(
+    async post(url: string, data: object, headers?: object) {
+        const res = await axios.post(
             url,
             data,
             { headers },
         )
+        return res.data
     },
 
-    put(url: string, data: object, headers: object) {
-        return axios.put(
+    async put(url: string, data: object, headers?: object) {
+        const res = await axios.put(
             url,
             data,
             { headers },
         )
+        return res.data
     },
 
-    delete(url: string, headers: object) {
-        return axios.delete(
+    async delete(url: string, headers?: object) {
+        const res = await axios.delete(
             url,
             { headers },
         )
+        return res.data
     },
 }

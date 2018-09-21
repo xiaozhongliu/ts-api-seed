@@ -9,7 +9,7 @@ const { Success, Fail } = messages
 Object.assign(express.response, {
 
     success(
-        data?: object,
+        data?: object | string,
         msg: string = Success.msg,
     ) {
         this.json({ code: Success.code, msg, data })

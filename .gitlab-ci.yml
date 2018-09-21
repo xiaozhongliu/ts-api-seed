@@ -1,0 +1,191 @@
+############################################################################
+#                       ci template for api projects
+#---------------------------------------------------------------------------
+# prerequisite:
+# 1. admin runner settings:
+#     Runners -> set all runners as protected
+# 2. project settings:
+#     Repository -> add hotfix/release/master to protected branches
+#     CI/CD -> Test coverage parsing: All files\s+\|\s+(\d+\.\d+) \|
+#     CI/CD -> Variables: APP_TYPE = api, IMAGE_VERSION = v0.1.0
+# 3. group settings:
+#     CI/CD -> Variables: REGISTRY_URL, REGISTRY_USERNAME, REGISTRY_PASSWORD
+# 4. worker servers:
+#     login the private image registry
+#     mkdir -p /var/log/app/$CI_PROJECT_NAME
+############################################################################
+
+stages:
+  - test
+  - int
+  - qa
+  - deliver
+  - release
+
+# cache is not working, current workaround is to backup
+# and restore node_modules for every related stage
+# cache:
+#   key: "$CI_PROJECT_NAME"
+#   paths:
+#   - node_modules/
+
+variables:
+  IP: "172.20.0.103"
+  PORT: "9103"
+  DASHES: "---------------------------------------"
+  MODULES_FOLDER_TEST: node_modules-$CI_PROJECT_NAME-test
+  MODULES_FOLDER_PROD: node_modules-$CI_PROJECT_NAME-prod
+  IMAGE: $REGISTRY_URL/$REGISTRY_USERNAME/$CI_PROJECT_NAME:$IMAGE_VERSION
+  IMAGE_NAME: $REGISTRY_URL/$REGISTRY_USERNAME/$CI_PROJECT_NAME
+
+before_script:
+  - echo "$DASHES started at `date '+%Y-%m-%d %H:%M:%S'` $DASHES"
+  - pwd && ls -l
+after_script:
+  - echo "$DASHES ended at `date '+%Y-%m-%d %H:%M:%S'` $DASHES"
+
+test:
+  stage: test
+  when: manual
+  only:
+    - int
+    - hotfix
+    - release
+  tags:
+    - shell-runner
+  script:
+    - >
+      if true; then
+
+        #------------- 1. restore node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    1. restore node_modules\n"
+        if [ -d "../$MODULES_FOLDER_TEST" ]; then
+          mv ../$MODULES_FOLDER_TEST ./node_modules
+        fi
+
+        #------------- 2. launch unittests
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    2. launch unittests\n"
+        cnpm i && tsc && export NODE_ENV=int
+        node ./node_modules/jest/bin/jest.js --coverage --silent --verbose --forceExit
+
+        #------------- 3. backup node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    3. backup node_modules\n"
+        if [ ! -d "../$MODULES_FOLDER_TEST" ]; then
+          mv node_modules ../$MODULES_FOLDER_TEST
+        fi
+
+      fi
+  artifacts:
+    paths:
+      - dist/
+
+int:
+  stage: int
+  when: manual
+  only:
+    - int
+  tags:
+    - shell-runner
+  script:
+    - >
+      if true; then
+
+        #------------- 1. restore node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    1. restore node_modules\n"
+        if [ -d "../$MODULES_FOLDER_PROD" ]; then
+          mv ../$MODULES_FOLDER_PROD ./node_modules
+        fi
+
+        #------------- 2. stop and remove
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    2. stop and remove\n"
+        if [ "$(docker ps --format '{{.Names}}' | grep "^$CI_PROJECT_NAME-")" ] ; then
+          docker ps --format '{{.Names}}' | grep "^$CI_PROJECT_NAME-" | awk '{print $1}' | xargs -I {} docker stop {}
+          docker ps -a --format '{{.Names}}' | grep "^$CI_PROJECT_NAME-" | awk '{print $1}' | xargs -I {} docker rm {}
+        fi
+
+        #------------- 3. build and host
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    3. build and host\n"
+        cnpm i --production
+        docker build -t $IMAGE .
+        # - docker network create -d bridge --subnet 172.20.0.0/16 flashbeep
+        docker run --network=flashbeep --ip=$IP -p $PORT:$PORT \
+            -v /var/log/app/$CI_PROJECT_NAME:/app/log \
+            -e NODE_ENV=int -e ENTRY_FILE=dist/app.js \
+            --name=$CI_PROJECT_NAME-api -d $IMAGE
+
+        #------------- 4. clean up
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    4. clean up\n"
+         if [ "$(docker ps -a -q -f status=exited)" ] ; then
+          docker rm $(docker ps -a -q -f status=exited)
+        fi
+        if [ "$(docker images -q -f reference=$IMAGE_NAME -f dangling=true)" ] ; then
+          docker rmi $(docker images -q -f reference=$IMAGE_NAME -f dangling=true)
+        fi
+        if [ "$(docker volume ls -q -f dangling=true)" ] ; then
+          docker volume rm $(docker volume ls -q -f dangling=true)
+        fi
+
+        #------------- 5. backup node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    5. backup node_modules\n"
+        if [ ! -d "../$MODULES_FOLDER_PROD" ]; then
+          mv node_modules ../$MODULES_FOLDER_PROD
+        fi
+
+      fi
+
+qa:
+  stage: qa
+  when: manual
+  only:
+    - int
+  tags:
+    - shell-runner
+  script:
+    - >
+      if true; then
+
+      fi
+
+deliver:
+  stage: deliver
+  when: manual
+  only:
+    - hotfix
+    - release
+  tags:
+    - shell-runner
+  script:
+    - >
+      if true; then
+
+        #------------- 1. restore node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    1. restore node_modules\n"
+        if [ -d "../$MODULES_FOLDER_PROD" ]; then
+          mv ../$MODULES_FOLDER_PROD ./node_modules
+        fi
+
+        #------------- 2. build and deliver image to registry
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    2. build and deliver image to registry\n"
+        cnpm i --production
+        docker build -t $IMAGE .
+        docker login -u=$REGISTRY_USERNAME -p=$REGISTRY_PASSWORD $REGISTRY_URL
+        docker push $IMAGE
+
+        #------------- 3. backup node_modules
+        printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    3. backup node_modules\n"
+        if [ ! -d "../$MODULES_FOLDER_PROD" ]; then
+          mv node_modules ../$MODULES_FOLDER_PROD
+        fi
+
+      fi
+
+release:
+  stage: release
+  when: manual
+  only:
+    - hotfix
+    - release
+  tags:
+    - shell-runner
+  script:
+    - docker stack deploy -c docker-compose.yml $CI_PROJECT_NAME --with-registry-auth

@@ -52,7 +52,7 @@ export default {
         let payload
         try {
             payload = await jwtSvc.verify(jwt)
-        } catch (e) {
+        } catch (error) {
             throw toolset.messageErr('VerifyFail')
         }
         if (!payload) {

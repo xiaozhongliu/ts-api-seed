@@ -26,6 +26,7 @@
                 "destructuring": "all"
             }
         ],
+        "prefer-template": true,
         "quotemark": [
             true,
             "single",

@@ -17,7 +17,7 @@ export default async (req: Request, res: Response, next: Function) => {
     let payload
     try {
         payload = await jwtSvc.verify(jwt)
-    } catch (e) {
+    } catch (error) {
         return next(toolset.messageErr('AuthFail'))
     }
     if (!payload) {

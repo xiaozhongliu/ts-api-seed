@@ -7,6 +7,7 @@ interface Config extends Indexed {
     // security
     HASH_SECRET: string
     JWT_SECRET: string
+    JWT_ISSUER: string
     JWT_TOKEN_TIMEOUT: number
 
     // no auth stuffs
@@ -42,6 +43,8 @@ interface Config extends Indexed {
         HOST: string
         PORT: number
     }
+
+    ZOO_KEEPER?: string
 
     MONGO?: string
 

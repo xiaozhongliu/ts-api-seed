@@ -1,21 +1,24 @@
+const API_NAME = 'ts-api-seed'
+
 export default {
 
     // basic
-    API_NAME: 'ts-api-seed',
-    API_PORT: 8001,
+    API_NAME,
+    API_PORT: 9103,
 
     // security
     HASH_SECRET: 'vmHOX8ALwx',
-    JWT_SECRET: 's!v^%W.Y80Mp$g$',
+    JWT_SECRET: '8LjJeMwy6AsadXJWTFFfI0AsM7MCMjr5',
+    JWT_ISSUER: 'Iy1LMLSARlY9z8CbisFDfp1WJfK8iEjh',
     JWT_TOKEN_TIMEOUT: 864000, // 10 days
 
     // no auth stuffs
     NO_AUTH_REG: /\.log$|\.ico$|^\/socket.io/,
     NO_AUTH_PATHS: [
-        '/',
-        '/monitor',
-        '/login',
-        '/register',
+        `/${API_NAME}/`,
+        `/${API_NAME}/monitor`,
+        `/${API_NAME}/login`,
+        `/${API_NAME}/register`,
     ],
 
     // logs location

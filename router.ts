@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import { validate } from './midware'
-import { baseCtrl } from './ctrl'
+import { baseCtrl, testCtrl } from './ctrl'
 const router = Router()
 
 
@@ -9,6 +9,8 @@ register('post', '/login', baseCtrl.login)
 register('get', '/verify', baseCtrl.verify)
 register('post', '/register', baseCtrl.register)
 
+// test
+register('get', '/dynconfig', testCtrl.getDynamicConfig)
 
 // check health
 const monitor = (req: Request, res: Response) => {
@@ -45,9 +47,10 @@ function register(method: string, path: string, func: Function, ...midwares: Fun
 function co(ctrl: Function) {
     return async (req: Request, res: Response, next: Function) => {
         try {
+            res.log.action = ctrl.name
             await ctrl(req, res, next)
-        } catch (e) {
-            next(e)
+        } catch (error) {
+            next(error)
         }
     }
 }

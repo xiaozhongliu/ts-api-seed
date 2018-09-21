@@ -31,6 +31,10 @@ export default {
         ['avatar', Types.String, false],
     ],
 
+    getDynamicConfig: [
+        ['key', Types.String, true],
+    ],
+
     /**
      * validation helper
      */
@@ -72,10 +76,10 @@ function queryParser(query: any, field: string, type: Type) {
             if (!['true', 'false'].includes(value)) throw new Error()
             query[field] = value === 'true'
         }
-    } catch (e) {
-        e.code = messages.CommonErr.code
-        e.message = `请求参数${field}的值${value}不是${type.name}类型`
-        throw e
+    } catch (error) {
+        error.code = messages.CommonErr.code
+        error.message = `请求参数${field}的值${value}不是${type.name}类型`
+        throw error
     }
 }
 
