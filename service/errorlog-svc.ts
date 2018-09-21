@@ -1,13 +1,13 @@
-import { Request } from 'express'
-import config from '../config'
+import { Context } from 'koa'
 import { mailer } from '../util'
+import config from '../config'
 
 export default {
 
     /**
      * alarm system level errors
      */
-    createErrorLog(req: Request, code: number | string, message: string, stack: string) {
+    createErrorLog(ctx: Context, code: number | string, message: string, stack: string) {
         const errorLog = {
             endType: 'backend',
             appName: config.API_NAME,
@@ -15,17 +15,17 @@ export default {
             errCode: code,
             errStack: stack,
             data: {
-                url: req.url,
-                method: req.method,
+                url: ctx.url,
+                method: ctx.method,
                 header: {
-                    clientip: req.header('http_x_forwarded_for'),
+                    clientip: ctx.get('http_x_forwarded_for'),
                 },
             },
-            username: req.body.username,
+            username: ctx.body.username,
         }
-        if (req.method !== 'GET') {
+        if (ctx.method !== 'GET') {
             // @ts-ignore
-            errorLog.data.body = req.body
+            errorLog.data.body = ctx.body
         }
 
         mailer.alarm(config.API_NAME, JSON.stringify(errorLog))

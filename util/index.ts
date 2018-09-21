@@ -1,6 +1,6 @@
-import './extender'
 import client from './client'
 import dynconfig from './dynconfig'
+import extender from './extender'
 import logger from './logger'
 import mailer from './mailer'
 import mongo from './mongo'
@@ -13,6 +13,7 @@ import customValidators from './validator'
 export {
     client,
     dynconfig,
+    extender,
     logger,
     mailer,
     mongo,

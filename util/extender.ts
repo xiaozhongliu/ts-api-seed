@@ -1,24 +1,23 @@
 /* ******************************************************************
  * extends targets here
  ****************************************************************** */
-import express from 'express'
+import Koa from 'koa'
 import messages from '../message'
 const { Success, Fail } = messages
 
-// @ts-ignore
-Object.assign(express.response, {
+export default async (app: Koa) => {
 
-    success(
+    app.context.success = function (
         data?: object | string,
         msg: string = Success.msg,
     ) {
-        this.json({ code: Success.code, msg, data })
-    },
+        this.body = { code: Success.code, msg, data }
+    }
 
-    fail(
+    app.context.fail = function (
         code: number | string = Fail.code,
         msg: string = Fail.msg,
     ) {
-        this.json({ code, msg })
-    },
-})
+        this.body = { code, msg }
+    }
+}

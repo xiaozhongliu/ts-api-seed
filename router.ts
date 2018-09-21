@@ -1,7 +1,9 @@
-import { Router, Request, Response } from 'express'
-import { validate } from './midware'
+import { Context } from 'koa'
+import Router from 'koa-router'
+import config from './config'
 import { baseCtrl, testCtrl } from './ctrl'
-const router = Router()
+
+const router = new Router({ prefix: `/${config.API_NAME}` })
 
 
 // base
@@ -13,8 +15,8 @@ register('post', '/register', baseCtrl.register)
 register('get', '/dynconfig', testCtrl.getDynamicConfig)
 
 // check health
-const monitor = (req: Request, res: Response) => {
-    res.success(undefined, 'sevice works well')
+const monitor = (ctx: Context, next: Function) => {
+    ctx.success(undefined, 'sevice works well')
 }
 router.get('/', monitor)
 router.get('/monitor', monitor)
@@ -29,30 +31,15 @@ router.get('/monitor', monitor)
  */
 function register(method: string, path: string, func: Function, ...midwares: Function[]) {
     const funcName = func.name
-    // @ts-ignore
-    const fields = validate[funcName]
-    if (fields) {
-        const validFunc = (req: Request, res: Response, next: Function) => {
-            validate.validateParams(req, next, fields)
-        }
-        return router[method](path, validFunc, ...midwares, co(func))
-    }
-    return router[method](path, ...midwares, co(func))
-}
-
-/**
- * wrap all ctrl funcs to handle errors
- * @param ctrl ctrl function
- */
-function co(ctrl: Function) {
-    return async (req: Request, res: Response, next: Function) => {
-        try {
-            res.log.action = ctrl.name
-            await ctrl(req, res, next)
-        } catch (error) {
-            next(error)
-        }
-    }
+    // // @ts-ignore
+    // const fields = validate[funcName]
+    // if (fields) {
+    //     const validFunc = (ctx: Context, next: Function) => {
+    //         validate.validateParams(ctx, next, fields)
+    //     }
+    //     return router[method](path, validFunc, ...midwares, func)
+    // }
+    router[method](path, ...midwares, func)
 }
 
 export default router

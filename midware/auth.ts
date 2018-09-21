@@ -1,16 +1,16 @@
-import { Request, Response } from 'express'
-import config from '../config'
+import { Context } from 'koa'
 import { toolset } from '../util'
 import { jwtSvc } from '../service'
+import config from '../config'
 
-export default async (req: Request, res: Response, next: Function) => {
-    if (isNoAuthPath(req.path) || req.method === 'OPTIONS') {
+export default async (ctx: Context, next: Function) => {
+    if (isNoAuthPath(ctx.path)) {
         return next()
     }
 
-    const { authorization } = req.headers
+    const { authorization } = ctx.headers
     if (!authorization) {
-        return next(toolset.messageErr('AuthFail'))
+        throw toolset.messageErr('AuthFail')
     }
     const jwt = authorization.substr(7)
 
@@ -18,14 +18,14 @@ export default async (req: Request, res: Response, next: Function) => {
     try {
         payload = await jwtSvc.verify(jwt)
     } catch (error) {
-        return next(toolset.messageErr('AuthFail'))
+        throw toolset.messageErr('AuthFail')
     }
     if (!payload) {
-        return next(toolset.messageErr('AuthFail'))
+        throw toolset.messageErr('AuthFail')
     }
 
-    req.auth = payload
-    next()
+    ctx.auth = payload
+    return next()
 }
 
 /**

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Context } from 'koa'
 import { dynconfig, toolset } from '../util'
 
 export default {
@@ -6,11 +6,11 @@ export default {
     /**
      * test dynamic config
      */
-    async getDynamicConfig(req: Request, res: Response) {
-        const value = dynconfig.get(req.query.key)
+    async getDynamicConfig(ctx: Context) {
+        const value = dynconfig.get(ctx.query.key)
         if (!value) throw toolset.messageErr('ConfigNotExist')
 
-        res.success({
+        ctx.success({
             target: value,
             all: [...dynconfig.entries()]
                 .map(pair => pair.join(': '))

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Context } from 'koa'
 import config from '../config'
 import { toolset } from '../util'
 import { User } from '../model'
@@ -9,8 +9,8 @@ export default {
     /**
      * user login
      */
-    async login(req: Request, res: Response) {
-        let { username, password, redirectUrl } = req.body
+    async login(ctx: Context) {
+        let { username, password, redirectUrl } = ctx.body
 
         // user exists and username & password match
         const getRes = await User.findOne({ where: { username } })
@@ -29,7 +29,7 @@ export default {
             redirectUrl = `${redirectUrl}?jwt=${jwt}`
         }
 
-        res.success({
+        ctx.success({
             jwt,
             sysType: getRes.sysType,
             username: getRes.username,
@@ -41,8 +41,8 @@ export default {
     /**
      * verify jwt token
      */
-    async verify(req: Request, res: Response) {
-        const { authorization } = req.headers
+    async verify(ctx: Context) {
+        const { authorization } = ctx.headers
         if (!authorization) {
             throw toolset.messageErr('VerifyFail')
         }
@@ -59,14 +59,14 @@ export default {
             throw toolset.messageErr('VerifyFail')
         }
 
-        res.success(payload)
+        ctx.success(payload)
     },
 
     /**
      * user register
      */
-    async register(req: Request, res: Response) {
-        let { sysType, username, password, avatar } = req.body
+    async register(ctx: Context) {
+        let { sysType, username, password, avatar } = ctx.body
 
         // user exists
         if (await User.findOne({ where: { username } })) {
@@ -81,6 +81,6 @@ export default {
             avatar,
         })
 
-        res.success()
+        ctx.success()
     },
 }
