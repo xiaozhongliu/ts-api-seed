@@ -1,19 +1,18 @@
-import { Request, Response } from 'express'
-import { toolset, validhelper } from '../util'
+import { Context } from 'koa'
 import messages from '../message'
+import { toolset, validhelper } from '../util'
 
 const Types = {
     String: { name: 'String', func: 'isString', base: 'String' },
     Number: { name: 'Number', func: 'isFloat' },
     Boolean: { name: 'Boolean', func: 'isBoolean' },
-    Url: { name: 'Url', func: 'isURL', base: 'String' },
+    Url: { name: 'Url', func: 'isUrl', base: 'String' },
     Hash: { name: 'Hash', func: 'isHash', base: 'String' },
-    Phone: { name: 'Phone', func: 'isPhone', base: 'String' },
+    Phone: { name: 'Phone', func: 'isMobilePhone', base: 'String' },
     IdCardNO: { name: 'IdCardNO', func: 'isIdCardNO', base: 'String' },
     ObjectId: { name: 'ObjectId', func: 'isMongoId', base: 'String' },
     Stamp: { name: 'Stamp', func: 'isStamp' },
     UnixStamp: { name: 'UnixStamp', func: 'isUnixStamp' },
-    StringArray: { name: '[String]', func: 'isStringArray' },
 }
 
 export default {
@@ -38,24 +37,33 @@ export default {
     /**
      * validation helper
      */
-    validateParams(req: Request, next: Function, fields: any[]) {
+    validateParams(ctx: Context, next: Function, fields: any[]) {
         fields.forEach(([field, type, required]) => {
             if (required) {
                 const key = getEmptyErrorKey(field)
-                validhelper.assertEmptyOne(req, field, messages.get(key).code)
+                validhelper.assertEmptyOne(ctx, field, messages.get(key).code)
             }
 
-            if (field in req.query) {
-                queryParser(req.query, field, type)
-            } else if (field in req.body) {
-                bodyChecker(req.body, field, type)
+            if (field in ctx.query) {
+                queryParser(ctx.query, field, type)
+            } else if (field in ctx.body) {
+                bodyChecker(ctx.body, field, type)
             }
 
-            if (field in req.query || field in req.body) {
-                validhelper.assertType(req, field, messages.CommonErr.code, type)
+            if (field in ctx.query || field in ctx.body) {
+                validhelper.assertType(ctx, field, messages.CommonErr.code, type)
             }
         })
-        handleResult(req, next)
+
+        if (ctx.errors) {
+            const error: Indexed = ctx.errors[0]
+            const errorMsg = error[Object.keys(error)[0]]
+            const arr = errorMsg.split('@@')
+            const err = new Error(arr[1])
+            err.code = Number.parseInt(arr[0])
+            throw err
+        }
+        return next()
     },
 }
 
@@ -97,15 +105,4 @@ function bodyChecker(body: any, field: string, type: Type) {
             msg: `请求参数${field}的值${value}不可以是String类型`,
         })
     }
-}
-
-function handleResult(req: Request, next: Function) {
-    req.getValidationResult().then(result => {
-        if (result.isEmpty()) return next()
-
-        const arr = result.array()[0].msg.split('@@')
-        const err = new Error(arr[1])
-        err.code = Number.parseInt(arr[0])
-        return next(err)
-    })
 }

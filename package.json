@@ -26,6 +26,7 @@
     "koa-body": "^4.0.4",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
+    "koa-validate": "^1.0.7",
     "log4js": "^3.0.4",
     "moment": "^2.22.2",
     "mongoose": "^5.2.7",

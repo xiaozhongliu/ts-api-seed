@@ -1,3 +1,4 @@
+import './validator'
 import client from './client'
 import dynconfig from './dynconfig'
 import extender from './extender'
@@ -8,7 +9,6 @@ import postgres from './postgres'
 import redis from './redis'
 import toolset from './toolset'
 import validhelper from './valid-helper'
-import customValidators from './validator'
 
 export {
     client,
@@ -21,5 +21,4 @@ export {
     redis,
     toolset,
     validhelper,
-    customValidators,
 }

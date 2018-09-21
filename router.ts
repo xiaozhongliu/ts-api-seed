@@ -1,6 +1,7 @@
 import { Context } from 'koa'
 import Router from 'koa-router'
 import config from './config'
+import { validate } from './midware'
 import { baseCtrl, testCtrl } from './ctrl'
 
 const router = new Router({ prefix: `/${config.API_NAME}` })
@@ -31,14 +32,14 @@ router.get('/monitor', monitor)
  */
 function register(method: string, path: string, func: Function, ...midwares: Function[]) {
     const funcName = func.name
-    // // @ts-ignore
-    // const fields = validate[funcName]
-    // if (fields) {
-    //     const validFunc = (ctx: Context, next: Function) => {
-    //         validate.validateParams(ctx, next, fields)
-    //     }
-    //     return router[method](path, validFunc, ...midwares, func)
-    // }
+    // @ts-ignore
+    const fields = validate[funcName]
+    if (fields) {
+        const validFunc = (ctx: Context, next: Function) => {
+            return validate.validateParams(ctx, next, fields)
+        }
+        return router[method](path, validFunc, ...midwares, func)
+    }
     router[method](path, ...midwares, func)
 }
 

@@ -2,52 +2,30 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = 'dev'
 // use same root directory for node and ts-node
 global.rootdir = __dirname.replace('/dist', '')
 
-import bodyParser from 'body-parser'
-import expressValidator from 'express-validator'
-import express, { Request, Response } from 'express'
-import {
-    filter,
-    monitor,
-    httplog,
-    cors,
-    auth,
-} from './midware'
-import { toolset, customValidators } from './util'
-import { errorlogSvc } from './service'
+import Koa from 'koa'
+import koaBody from 'koa-body'
+import validate from 'koa-validate'
 import router from './router'
 import config from './config'
+import { extender } from './util'
+import {
+    auth,
+    bodyMounter,
+    errorHandler,
+    httplog,
+} from './midware'
 
-const app = express()
-app.get('*', filter)
-app.use(monitor)
-app.use(bodyParser.json())
-app.use(bodyParser.text({ type: '*/xml' }))
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(expressValidator({ customValidators }))
-
-app.use(httplog)
-app.use(cors)
+const app = new Koa()
+validate(app)
+extender(app)
+app.use(koaBody())
+app.use(bodyMounter)
+app.use(errorHandler)
 app.use(auth)
-app.use(`/${config.API_NAME}`, router)
+app.use(httplog)
+app.use(router.routes())
+app.use(router.allowedMethods())
 
-app.use((req: Request, res: Response, next: Function) => {
-    next(toolset.messageErr('NotFound', req.url))
-})
-
-app.use(({ code = -1, message, stack }: Error, req: Request, res: Response, next: Function) => {
-    res.fail(code, message)
-    if (code === -1) console.log(stack)
-    if (code > 10001 || req.method === 'OPTIONS') return
-    errorlogSvc.createErrorLog(req, code, message, stack)
-})
-
-// use a different port for unittests from the running api
-const isInUnitTest = process.argv[1].includes('jest')
-const port = isInUnitTest ? 9999 : config.API_PORT
-app.listen(port)
-
-process.on('unhandledRejection', err => {
-    console.log('unhandled rejection:', err)
-})
+app.listen(config.API_PORT)
 
 export default app
