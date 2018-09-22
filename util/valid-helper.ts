@@ -38,7 +38,7 @@ export default {
      */
     assertType(ctx: Context, field: string, code: number, type: Type) {
         const assertMethod = getMethod(ctx, field).bind(ctx)
-        const midRes: any = assertMethod(field)
+        const midRes: Indexed = assertMethod(field)
         midRes[type.func](`${code}@@请求参数${field}的值${getFieldValue(ctx, field)}不是${type.name}类型`)
     },
 }

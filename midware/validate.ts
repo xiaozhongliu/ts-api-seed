@@ -37,7 +37,7 @@ export default {
     /**
      * validation helper
      */
-    validateParams(ctx: Context, next: Function, fields: any[]) {
+    validateParams(ctx: Context, next: Function, fields: [string, Type, boolean][]) {
         fields.forEach(([field, type, required]) => {
             if (required) {
                 const key = getEmptyErrorKey(field)

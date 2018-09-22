@@ -38,8 +38,9 @@ function register(method: string, path: string, func: Function, ...midwares: Fun
         const validFunc = (ctx: Context, next: Function) => {
             return validate.validateParams(ctx, next, fields)
         }
-        return router[method](path, validFunc, ...midwares, func)
+        midwares.push(validFunc)
     }
+    // @ts-ignore
     router[method](path, ...midwares, func)
 }
 

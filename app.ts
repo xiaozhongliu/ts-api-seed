@@ -9,9 +9,9 @@ import router from './router'
 import config from './config'
 import { extender } from './util'
 import {
-    auth,
     bodyMounter,
     errorHandler,
+    auth,
     httplog,
 } from './midware'
 

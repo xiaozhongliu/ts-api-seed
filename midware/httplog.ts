@@ -16,7 +16,7 @@ export default async (ctx: Context, next: Function) => {
     const start = moment()
     await next()
 
-    const log = {
+    const log: Log = {
         url: ctx.url,
         method: ctx.method,
         headers: JSON.stringify({
