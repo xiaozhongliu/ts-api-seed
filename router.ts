@@ -30,7 +30,12 @@ router.get('/monitor', monitor)
  * @param func     ctrl function
  * @param midwares route level midware functions
  */
-function register(method: string, path: string, func: Function, ...midwares: Function[]) {
+function register(
+    method: string,
+    path: string,
+    func: Function,
+    ...midwares: Function[],
+) {
     const funcName = func.name
     // @ts-ignore
     const fields = validate[funcName]
@@ -41,7 +46,10 @@ function register(method: string, path: string, func: Function, ...midwares: Fun
         midwares.push(validFunc)
     }
     // @ts-ignore
-    router[method](path, ...midwares, func)
+    router[method](path, ...midwares, (ctx: Context) => {
+        ctx.log.action = func.name
+        return func(ctx)
+    })
 }
 
 export default router

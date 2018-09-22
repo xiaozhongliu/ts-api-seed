@@ -1,7 +1,7 @@
 import { Context } from 'koa'
 import config from '../config'
-import { toolset } from '../util'
 import { User } from '../model'
+import { toolset } from '../util'
 import { jwtSvc } from '../service'
 
 export default {

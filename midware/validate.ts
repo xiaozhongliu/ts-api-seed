@@ -77,7 +77,7 @@ function queryParser(query: any, field: string, type: Type) {
     const value = query[field]
     try {
         if (type === Types.Number) {
-            const parsed = parseFloat(value)
+            const parsed = Number.parseFloat(value)
             if (global.isNaN(parsed)) throw new Error()
             query[field] = parsed
         } else if (type === Types.Boolean) {

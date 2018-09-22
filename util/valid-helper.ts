@@ -1,5 +1,5 @@
 /* ******************************************************************
- * helper functions for express-validator
+ * helper functions for koa-validate
  ****************************************************************** */
 import { Context } from 'koa'
 import messages from '../message'

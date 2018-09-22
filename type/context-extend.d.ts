@@ -1,4 +1,5 @@
 import 'koa'
+import { Moment } from 'moment'
 
 declare module 'koa' {
 
@@ -8,12 +9,28 @@ declare module 'koa' {
     }
 
     interface Context {
-        auth?: object
-        errors?: object[]
+        auth: object
+        errors: object[]
 
         checkHeaders: Function
         checkParams: Function
         checkQuery: Function
         checkBody: Function
+
+        start: Moment
+        log: {
+            url: string
+            method: string
+            headers: string
+            action?: string
+            body?: string
+            resp?: string
+            status?: number
+            '@clientip'?: string
+            '@reqstart'?: string
+            '@clientgeo'?: object
+            '@reqend'?: string
+            '@duration'?: number
+        }
     }
 }
