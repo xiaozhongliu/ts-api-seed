@@ -34,7 +34,7 @@ function register(
     method: string,
     path: string,
     func: Function,
-    ...midwares: Function[],
+    ...midwares: Function[]
 ) {
     const funcName = func.name
     // @ts-ignore
