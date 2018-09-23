@@ -4,10 +4,10 @@ const { Success } = messages
 
 describe('api tests', () => {
 
-    let jwt
+    let jwt: string
 
     it('monitor ', async () => {
-        const { body } = await request.get('/')
+        const { body } = await request.get('/monitor')
         expect(body.code).toBe(Success.code)
     })
 

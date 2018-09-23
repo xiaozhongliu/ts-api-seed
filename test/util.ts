@@ -1,4 +1,4 @@
-// use same root directory for node and ts-node
+// @ts-ignore
 global.rootdir = __dirname
 
 import supertest from 'supertest'
