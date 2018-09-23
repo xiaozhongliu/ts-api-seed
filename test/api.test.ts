@@ -1,5 +1,5 @@
 import request from 'supertest'
-import app from '../app'
+import server from '../app'
 import config from '../config'
 import messages from '../message'
 const { Success } = messages
@@ -9,12 +9,12 @@ describe('api tests', () => {
     let jwt
 
     it('monitor     ', async () => {
-        const { body } = await request(app).get(`/${config.API_NAME}/`)
+        const { body } = await request(server).get(`/${config.API_NAME}/`)
         expect(body.code).toBe(Success.code)
     })
 
     it('login       ', async () => {
-        const { body } = await request(app)
+        const { body } = await request(server)
             .post(`/${config.API_NAME}/login`)
             .send({
                 'sysType': 1,
@@ -27,7 +27,7 @@ describe('api tests', () => {
     })
 
     it('verify      ', async () => {
-        const { body } = await request(app)
+        const { body } = await request(server)
             .get(`/${config.API_NAME}/verify`)
             .set('Authorization', `Bearer ${jwt}`)
         expect(body.code).toBe(Success.code)
@@ -35,7 +35,7 @@ describe('api tests', () => {
     })
 
     it('register    ', async () => {
-        const { body } = await request(app)
+        const { body } = await request(server)
             .post(`/${config.API_NAME}/register`)
             .send({
                 'sysType': 1,

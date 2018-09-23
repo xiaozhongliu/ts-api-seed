@@ -66,7 +66,7 @@ test:
         #------------- 2. launch unittests
         printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    2. launch unittests\n"
         cnpm i && tsc && export NODE_ENV=int
-        node ./node_modules/jest/bin/jest.js --coverage --silent --verbose --forceExit
+        node ./node_modules/jest/bin/jest.js --coverage --silent --verbose
 
         #------------- 3. backup node_modules
         printf "\n$DASHES `date '+%Y-%m-%d %H:%M:%S'`    3. backup node_modules\n"

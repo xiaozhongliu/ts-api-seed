@@ -26,6 +26,9 @@ app.use(httplog)
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-app.listen(config.API_PORT)
+// use a different port for unittests from the running api
+const isInUnitTest = process.argv[1].includes('jest')
+const port = isInUnitTest ? 9999 : config.API_PORT
+const server = app.listen(port)
 
-export default app
+export default server

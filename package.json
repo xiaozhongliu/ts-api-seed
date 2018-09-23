@@ -11,7 +11,7 @@
     "build": "npm run watch-ts",
     "watch-node": "nodemon --inspect dist/app.js",
     "watch-ts": "tsc -w",
-    "test": "NODE_ENV=dev jest --silent --verbose --forceExit"
+    "test": "NODE_ENV=dev jest --silent --verbose"
   },
   "dependencies": {
     "axios": "~0.18.0",
