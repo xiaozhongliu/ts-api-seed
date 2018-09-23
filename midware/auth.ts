@@ -1,7 +1,7 @@
 import { Context } from 'koa'
+import config from '../config'
 import { toolset } from '../util'
 import { jwtSvc } from '../service'
-import config from '../config'
 
 export default async (ctx: Context, next: Function) => {
     if (isNoAuthPath(ctx.path)) {

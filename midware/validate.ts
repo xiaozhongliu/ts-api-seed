@@ -35,7 +35,7 @@ export default {
     ],
 
     /**
-     * validation helper
+     * route level validation midware helper
      */
     validateParams(ctx: Context, next: Function, fields: [string, Type, boolean][]) {
         fields.forEach(([field, type, required]) => {

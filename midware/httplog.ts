@@ -30,7 +30,7 @@ export default async (ctx: Context, next: Function) => {
 
     setImmediate(async () => {
         let geo
-        const ip = '183.192.63.4'// ctx.get('x-forwarded-for')
+        const ip = ctx.get('x-forwarded-for')
         if (ip) {
             try {
                 const { latitude, longitude }: Indexed = await client.get(`https://ipstack.com/ipstack_api.php?ip=${ip}`)
